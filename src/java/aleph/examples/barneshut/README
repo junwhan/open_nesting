@@ -1,0 +1,56 @@
+
+             Implementing Barnes-Hut-Nbody Algorithm in Aleph
+
+                     An Yan  (ya@cs.brown.edu)
+
+
+--------------------------------------------------------------------
+1.  The Barnes-Hut-Nbody Algorithm.
+
+The Barnes-Hut-Nbody algorithm is used for evaluating the interaction 
+among a number of particles. Each particle has given mass, an initial 3D 
+position and initial 3D velocity. The force between each pair of particles is 
+determined by their mass and the distance between them. We need to eval-
+ute all the forces to obtain the accelleration and the next-time position of 
+each particle. In a trivial algorithm, this computation need O(N*N) time. 
+
+Barnes-Hut-Nbody algorithm divides pariticles into cells(groups) 
+according to their current position. Cells can also be divided into subcells. 
+The mass of a cell is the total mass of the body nodes in it and the position 
+of a cell is its mass center. The force on a paricle in the system can be eval-
+uated by walking down the tree level by level beginning with the top level. 
+At each level, if a cell is distant enough for a force evaluation, the force 
+between the particle and the cell are evaluated. If the cell is too close, it is 
+"opened" and its subcells are either used for the force evaluation or opened 
+further. The walk ends when all cells which pass the opening test and any 
+single particles are acquired. This algorithm need only O(N*log(N)) time.
+
+
+--------------------------------------------------------------------
+2.  Using Distributed Computing.
+
+To implement Barnes-Hut-Nbody algorithm in Aleph, we have to 
+change the algorithm a little to make use of distributed computing. Data 
+and global objects are distributed into PEs to make better use of computa-
+tion resources and to avoid trafic conjuntion. At each step of computation 
+(such as initialization, making tree, computing mass, computing accelara-
+tion, computing velocity, computing position, outputing results, etc.), 
+instances of given thread will be activated on every PE. All the computa-
+tion are connected by sharing a virtual tree which is stored distributedly.
+
+3.  Implementation & Usage.
+
+We implemented this algorithm in Java by using Aleph Package 6.2. To 
+run this program, enter "BH [infile] [outfile] [#nodeNum] [#stepsToGo] 
+[#outputFlag]" in the aleph console and press start. For example, 
+
+		BH
+		BH /u/ya/bh/infile
+		BH /u/ya/bh/infile /u/ya/bh/outfile
+		BH /u/ya/bh/infile /u/ya/bh/outfile 8 
+		BH /u/ya/bh/infile /u/ya/bh/outfile 8 3 
+		BH /u/ya/bh/infile /u/ya/bh/outfile 8 3 1
+
+The default value of nodeNum, stepsToGo and outputFlag are 16, 4, 1 
+respectively.
+

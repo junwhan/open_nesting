@@ -1,0 +1,30 @@
+/**********************/
+/*FILE: README        */
+/*ASGN: CHOLESKY      */
+/*NAME: LIYE MA       */
+/*DATE: FEB.99        */
+/**********************/
+
+1.Function of the program:
+
+    This program performs the cholesky factorization of a sparse symmetric
+positive-definite matrix: A = L*Lt. It is used as a benchmark of the Aleph
+Toolkit.
+
+2.How to run the program:
+
+    There is one command-line argument for this program: the inputfile name.
+A typical command to run this program would be like:
+   
+       "java aleph.Aleph aleph.work.Cholesky input-file-name"
+
+    The input matrix(A) should be stored in a file in the following format:
+       Line 1: dimension-of-matrix number-of-nonzero
+       Rest Lines: row column value-of-element
+         All nonzero elements must be put into the input file, though matrix
+       is symmetric.
+
+    Upon loading in the data, program will factor the matrix, store result
+into a corresponding ".res" file, and report the performance at the same
+time.
+
